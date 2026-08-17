@@ -5,39 +5,35 @@ on:
     tags:
       - 'v*'
 
-env:
-  DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-  SCHEME: JSKeyborad
-  DESTINATION: 'generic/platform=iOS'
-
 jobs:
   release:
-    name: Create Release
+    name: Build & Release
     runs-on: macos-14
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Extract version from tag
+      - name: Extract version
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
         
-      - name: Select Xcode version
+      - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
         
       - name: Build for Release
         run: |
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
-            -scheme $SCHEME \
-            -destination "$DESTINATION" \
+            -scheme JSKeyborad \
+            -destination 'generic/platform=iOS' \
             -configuration Release \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO | xcpretty
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty
             
-      - name: Create GitHub Release
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           name: "v${{ steps.version.outputs.VERSION }}"
@@ -45,19 +41,12 @@ jobs:
             ## JSKeyborad v${{ steps.version.outputs.VERSION }}
             
             ### 新功能
-            - 🎨 全新界面设计
             - ⌨️ 自定义键盘扩展
             - 📱 桌面小组件
-            
-            ### 改进
-            - 性能优化
-            - 稳定性提升
-            
-            ### Bug 修复
-            - 修复已知问题
+            - 🎨 全新界面设计
             
             ### 安装说明
-            1. 下载 `.ipa` 文件
+            1. 下载 `JSKeyborad.ipa`
             2. 使用 AltStore 或 Sideloadly 安装
             3. 在 设置 > 通用 > 键盘 中添加 JSKeyborad
           draft: false

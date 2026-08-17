@@ -1,0 +1,679 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		MAIN_APP_SRC /* JSKeyboradApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = MAIN_APP_SRC_REF /* JSKeyboradApp.swift */; };
+		CONTENT_VIEW_SRC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTENT_VIEW_SRC_REF /* ContentView.swift */; };
+		TEMPLATE_LIST_SRC /* TemplateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_LIST_SRC_REF /* TemplateListView.swift */; };
+		TEMPLATE_EDIT_SRC /* TemplateEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_EDIT_SRC_REF /* TemplateEditView.swift */; };
+		TEMPLATE_DETAIL_SRC /* TemplateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_DETAIL_SRC_REF /* TemplateDetailView.swift */; };
+		FOLDER_LIST_SRC /* FolderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_LIST_SRC_REF /* FolderListView.swift */; };
+		SETTINGS_VIEW_SRC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SETTINGS_VIEW_SRC_REF /* SettingsView.swift */; };
+		VARIABLE_INPUT_SRC /* VariableInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_INPUT_SRC_REF /* VariableInputView.swift */; };
+		TEMPLATE_MODEL_SRC /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
+		FOLDER_MODEL_SRC /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
+		VARIABLE_MODEL_SRC /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_MODEL_SRC_REF /* Variable.swift */; };
+		DATASTORE_SRC /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DATASTORE_SRC_REF /* DataStore.swift */; };
+		VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
+		JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = JS_ENGINE_SRC_REF /* JSScriptEngine.swift */; };
+		INFOPLIST_SRC /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = INFOPLIST_SRC_REF /* InfoPlist.swift */; };
+		KEYBOARD_VIEW_SRC /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */; };
+		KEYBOARD_VIEWCONTROLLER_SRC /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */; };
+		KEYBOARD_VIEWMODEL_SRC /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */; };
+		WIDGET_SRC /* TemplateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = WIDGET_SRC_REF /* TemplateWidget.swift */; };
+		TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
+		FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		JSKeyboradApp.app /* JSKeyborad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSKeyborad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "JSKeyborad-KeyboardExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "JSKeyborad-WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		JSKeyborad.entitlements /* JSKeyborad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JSKeyborad.entitlements; sourceTree = "<group>"; };
+		KEYBOARD.entitlements /* KeyboardExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KeyboardExtension.entitlements; sourceTree = "<group>"; };
+		WIDGET.entitlements /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
+		MAIN_APP_SRC_REF /* JSKeyboradApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSKeyboradApp.swift; sourceTree = "<group>"; };
+		CONTENT_VIEW_SRC_REF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		TEMPLATE_LIST_SRC_REF /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
+		TEMPLATE_EDIT_SRC_REF /* TemplateEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateEditView.swift; sourceTree = "<group>"; };
+		TEMPLATE_DETAIL_SRC_REF /* TemplateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateDetailView.swift; sourceTree = "<group>"; };
+		FOLDER_LIST_SRC_REF /* FolderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderListView.swift; sourceTree = "<group>"; };
+		SETTINGS_VIEW_SRC_REF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		VARIABLE_INPUT_SRC_REF /* VariableInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableInputView.swift; sourceTree = "<group>"; };
+		TEMPLATE_MODEL_SRC_REF /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
+		FOLDER_MODEL_SRC_REF /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
+		VARIABLE_MODEL_SRC_REF /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
+		DATASTORE_SRC_REF /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableProcessor.swift; sourceTree = "<group>"; };
+		JS_ENGINE_SRC_REF /* JSScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSScriptEngine.swift; sourceTree = "<group>"; };
+		INFOPLIST_SRC_REF /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
+		KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
+		WIDGET_SRC_REF /* TemplateWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWidget.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		MAIN_APP_FRAMEWORKS /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KEYBOARD_FRAMEWORKS /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		WIDGET_FRAMEWORKS /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ROOT_GROUP = {
+			isa = PBXGroup;
+			children = (
+				JSKeyborad_GROUP /* JSKeyborad */,
+				PRODUCTS_GROUP /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		JSKeyborad_GROUP /* JSKeyborad */ = {
+			isa = PBXGroup;
+			children = (
+				SOURCES_GROUP /* Sources */,
+				KEYBOARD_GROUP /* KeyboardExtension */,
+				WIDGET_GROUP /* WidgetExtension */,
+			);
+			path = JSKeyborad;
+			sourceTree = "<group>";
+		};
+		SOURCES_GROUP /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				MAIN_APP_SRC_REF /* JSKeyboradApp.swift */,
+				VIEWS_GROUP /* Views */,
+				MODELS_GROUP /* Models */,
+				SERVICES_GROUP /* Services */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		VIEWS_GROUP /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CONTENT_VIEW_SRC_REF /* ContentView.swift */,
+				TEMPLATE_LIST_SRC_REF /* TemplateListView.swift */,
+				TEMPLATE_EDIT_SRC_REF /* TemplateEditView.swift */,
+				TEMPLATE_DETAIL_SRC_REF /* TemplateDetailView.swift */,
+				FOLDER_LIST_SRC_REF /* FolderListView.swift */,
+				SETTINGS_VIEW_SRC_REF /* SettingsView.swift */,
+				VARIABLE_INPUT_SRC_REF /* VariableInputView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		MODELS_GROUP /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				TEMPLATE_MODEL_SRC_REF /* Template.swift */,
+				FOLDER_MODEL_SRC_REF /* Folder.swift */,
+				VARIABLE_MODEL_SRC_REF /* Variable.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		SERVICES_GROUP /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				DATASTORE_SRC_REF /* DataStore.swift */,
+				VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */,
+				JS_ENGINE_SRC_REF /* JSScriptEngine.swift */,
+				INFOPLIST_SRC_REF /* InfoPlist.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		KEYBOARD_GROUP /* KeyboardExtension */ = {
+			isa = PBXGroup;
+			children = (
+				KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */,
+				KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */,
+				KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */,
+			);
+			path = KeyboardExtension;
+			sourceTree = "<group>";
+		};
+		WIDGET_GROUP /* WidgetExtension */ = {
+			isa = PBXGroup;
+			children = (
+				WIDGET_SRC_REF /* TemplateWidget.swift */,
+			);
+			path = WidgetExtension;
+			sourceTree = "<group>";
+		};
+		PRODUCTS_GROUP /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				JSKeyboradApp.app /* JSKeyborad.app */,
+				KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */,
+				WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		MAIN_APP_TARGET /* JSKeyborad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = MAIN_APP_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad" */;
+			buildPhases = (
+				MAIN_APP_SOURCES /* Sources */,
+				MAIN_APP_FRAMEWORKS /* Frameworks */,
+				MAIN_APP_RESOURCES /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JSKeyborad;
+			productName = JSKeyborad;
+			productReference = JSKeyboradApp.app /* JSKeyborad.app */;
+			productType = "com.apple.product-type.application";
+		};
+		KEYBOARD_TARGET /* JSKeyborad-KeyboardExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = KEYBOARD_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-KeyboardExtension" */;
+			buildPhases = (
+				KEYBOARD_SOURCES /* Sources */,
+				KEYBOARD_FRAMEWORKS /* Frameworks */,
+				KEYBOARD_RESOURCES /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JSKeyborad-KeyboardExtension";
+			productName = "JSKeyborad-KeyboardExtension";
+			productReference = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		WIDGET_TARGET /* JSKeyborad-WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = WIDGET_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-WidgetExtension" */;
+			buildPhases = (
+				WIDGET_SOURCES /* Sources */,
+				WIDGET_FRAMEWORKS /* Frameworks */,
+				WIDGET_RESOURCES /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JSKeyborad-WidgetExtension";
+			productName = "JSKeyborad-WidgetExtension";
+			productReference = WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		PROJECT_OBJECT /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					MAIN_APP_TARGET = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					KEYBOARD_TARGET = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					WIDGET_TARGET = {
+						CreatedOnToolsVersion = 15.4;
+					};
+				};
+			};
+			buildConfigurationList = PROJECT_CONFIG_LIST /* Build configuration list for PBXProject "JSKeyborad" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = "zh-Hans";
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				"zh-Hans",
+				en,
+				Base,
+			);
+			mainGroup = ROOT_GROUP;
+			productRefGroup = PRODUCTS_GROUP /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				MAIN_APP_TARGET /* JSKeyborad */,
+				KEYBOARD_TARGET /* JSKeyborad-KeyboardExtension */,
+				WIDGET_TARGET /* JSKeyborad-WidgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		MAIN_APP_RESOURCES /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KEYBOARD_RESOURCES /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		WIDGET_RESOURCES /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		MAIN_APP_SOURCES /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				MAIN_APP_SRC /* JSKeyboradApp.swift in Sources */,
+				CONTENT_VIEW_SRC /* ContentView.swift in Sources */,
+				TEMPLATE_LIST_SRC /* TemplateListView.swift in Sources */,
+				TEMPLATE_EDIT_SRC /* TemplateEditView.swift in Sources */,
+				TEMPLATE_DETAIL_SRC /* TemplateDetailView.swift in Sources */,
+				FOLDER_LIST_SRC /* FolderListView.swift in Sources */,
+				SETTINGS_VIEW_SRC /* SettingsView.swift in Sources */,
+				VARIABLE_INPUT_SRC /* VariableInputView.swift in Sources */,
+				TEMPLATE_MODEL_SRC /* Template.swift in Sources */,
+				FOLDER_MODEL_SRC /* Folder.swift in Sources */,
+				VARIABLE_MODEL_SRC /* Variable.swift in Sources */,
+				DATASTORE_SRC /* DataStore.swift in Sources */,
+				VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */,
+				JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */,
+				INFOPLIST_SRC /* InfoPlist.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		KEYBOARD_SOURCES /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				KEYBOARD_VIEWCONTROLLER_SRC /* KeyboardViewController.swift in Sources */,
+				KEYBOARD_VIEW_SRC /* KeyboardView.swift in Sources */,
+				KEYBOARD_VIEWMODEL_SRC /* KeyboardViewModel.swift in Sources */,
+				TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */,
+				FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */,
+				VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */,
+				DATASTORE_SRC /* DataStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		WIDGET_SOURCES /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				WIDGET_SRC /* TemplateWidget.swift in Sources */,
+				TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */,
+				FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		PROJECT_DEBUG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		PROJECT_RELEASE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		MAIN_APP_DEBUG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/JSKeyborad.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		MAIN_APP_RELEASE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/JSKeyborad.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		KEYBOARD_DEBUG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/KeyboardExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
+				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.keyboard-service\"; }";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.keyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		KEYBOARD_RELEASE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/KeyboardExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
+				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.keyboard-service\"; }";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.keyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		WIDGET_DEBUG /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Widget";
+				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.widgetkit-extension\"; }";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		WIDGET_RELEASE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = JSKeyborad/WidgetExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Widget";
+				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.widgetkit-extension\"; }";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		PROJECT_CONFIG_LIST /* Build configuration list for PBXProject "JSKeyborad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				PROJECT_DEBUG /* Debug */,
+				PROJECT_RELEASE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		MAIN_APP_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				MAIN_APP_DEBUG /* Debug */,
+				MAIN_APP_RELEASE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		KEYBOARD_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-KeyboardExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				KEYBOARD_DEBUG /* Debug */,
+				KEYBOARD_RELEASE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		WIDGET_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				WIDGET_DEBUG /* Debug */,
+				WIDGET_RELEASE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = PROJECT_OBJECT /* Project object */;
+}
