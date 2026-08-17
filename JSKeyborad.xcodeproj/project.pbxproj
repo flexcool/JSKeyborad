@@ -36,6 +36,10 @@
 		CLIPBOARD_MANAGER_SRC_1 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */; };
 		USAGE_STATS_MANAGER_SRC_1 /* UsageStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */; };
 		KEYBOARD_SEARCH_VIEW_SRC_1 /* KeyboardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */; };
+		DATASTORE_SRC_1 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DATASTORE_SRC_REF /* DataStore.swift */; };
+		VARIABLE_PROCESSOR_SRC_1 /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
+		TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
+		FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -351,8 +355,8 @@
 				KEYBOARD_SEARCH_VIEW_SRC_1 /* KeyboardSearchView.swift in Sources */,
 				TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */,
 				FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */,
-				VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */,
-				DATASTORE_SRC /* DataStore.swift in Sources */,
+				VARIABLE_PROCESSOR_SRC_1 /* VariableProcessor.swift in Sources */,
+				DATASTORE_SRC_1 /* DataStore.swift in Sources */,
 				CLIPBOARD_MANAGER_SRC_1 /* ClipboardManager.swift in Sources */,
 				USAGE_STATS_MANAGER_SRC_1 /* UsageStatsManager.swift in Sources */,
 			);
@@ -363,8 +367,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				WIDGET_SRC /* TemplateWidget.swift in Sources */,
-				TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */,
-				FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */,
+				TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */,
+				FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
