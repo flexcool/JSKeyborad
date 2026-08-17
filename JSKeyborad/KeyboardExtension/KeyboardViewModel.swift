@@ -13,6 +13,9 @@ class KeyboardViewModel: ObservableObject {
         UserDefaults(suiteName: appGroupId)
     }
     
+    private let clipboardManager = ClipboardManager.shared
+    private let statsManager = UsageStatsManager.shared
+    
     func loadData() {
         loadFolders()
         loadTemplates()

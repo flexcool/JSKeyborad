@@ -219,6 +219,11 @@ struct KeyboardView: View {
         onTextInsert(processed)
         viewModel.incrementUseCount(template)
         viewModel.selectedTemplate = nil
+        
+        if contextProvider.hasFullAccess {
+            ClipboardManager.shared.copyToClipboard(processed, source: template.title)
+            UsageStatsManager.shared.recordInsertion(templateId: template.id, templateTitle: template.title)
+        }
     }
     
     private func updateAppearance(isDark: Bool) {
