@@ -25,7 +25,6 @@ jobs:
         
       - name: Build All Targets
         run: |
-          set -o pipefail
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -34,7 +33,21 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            | xcpretty
+            2>&1 | tee build-simulator.log || true
+          
+      - name: Show errors
+        if: failure() || always()
+        run: |
+          echo "=== ERRORS ==="
+          grep -i "error:" build-simulator.log | head -30 || true
+          
+      - name: Upload Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Simulator-Build-Log
+          path: build-simulator.log
+          retention-days: 7
 
   lint:
     name: Lint
@@ -66,7 +79,6 @@ jobs:
         
       - name: Build Archive
         run: |
-          set -o pipefail
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -77,9 +89,16 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO \
-            | xcpretty
+            2>&1 | tee build-archive.log || true
+          
+      - name: Show errors
+        if: failure() || always()
+        run: |
+          echo "=== ERRORS ==="
+          grep -i "error:" build-archive.log | head -30 || true
           
       - name: Create IPA
+        if: success()
         run: |
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
           cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
@@ -88,9 +107,11 @@ jobs:
           zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
           
       - name: Show IPA
+        if: success()
         run: ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
           
       - name: Upload Archive
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
@@ -98,8 +119,17 @@ jobs:
           retention-days: 7
           
       - name: Upload IPA
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
           path: ${{ github.workspace }}/build/JSKeyborad.ipa
           retention-days: 30
+          
+      - name: Upload Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Archive-Build-Log
+          path: build-archive.log
+          retention-days: 7
