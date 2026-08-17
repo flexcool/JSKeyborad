@@ -24,9 +24,8 @@ jobs:
           swift --version
         
       - name: Build All Targets
-        id: build
-        continue-on-error: true
         run: |
+          set -o pipefail
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -35,19 +34,6 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log | tail -50
-          
-      - name: Extract errors
-        if: steps.build.outcome == 'failure'
-        run: |
-          echo "## Build Errors" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -i "error:" build-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "## Last 80 lines" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -80 build-output.log >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
 
   lint:
     name: Lint
@@ -78,66 +64,59 @@ jobs:
         run: xcodebuild -version
         
       - name: Build Archive
-        id: archive
-        continue-on-error: true
         run: |
+          set -o pipefail
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
             -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO 2>&1 | tee archive-output.log | tail -50
           
-      - name: Extract errors
-        if: steps.archive.outcome == 'failure'
-        run: |
-          echo "## Archive Errors" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          grep -i "error:" archive-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "## Last 80 lines" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -80 archive-output.log >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          exit 1
-          
       - name: Create IPA
         run: |
           set -e
-          echo "## Archive contents" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -type d | head -30 >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          
-          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "*.app" -type d 2>/dev/null
-          
-          APP_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app"
-          if [ ! -d "$APP_PATH" ]; then
-            echo "JSKeyborad.app not at expected path, searching..."
-            APP_PATH=$(find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
-            if [ -z "$APP_PATH" ]; then
-              echo "ERROR: JSKeyborad.app not found anywhere in archive"
-              find ${{ github.workspace }}/build -name "*.app" -type d 2>/dev/null
-              echo "## App not found" >> $GITHUB_STEP_SUMMARY
-              echo "JSKeyborad.app not found in archive" >> $GITHUB_STEP_SUMMARY
-              exit 1
-            fi
+          ARCHIVE_DIR="${{ github.workspace }}/build/JSKeyborad.xcarchive"
+          if [ ! -d "$ARCHIVE_DIR" ]; then
+            echo "ERROR: Archive not found at $ARCHIVE_DIR"
+            echo "## Archive Build Errors" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -i "error:" archive-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "## Last 100 lines" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -100 archive-output.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
           fi
+          
+          echo "## Archive Structure" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          find "$ARCHIVE_DIR" -type d | head -30 >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          
+          APP_PATH=$(find "$ARCHIVE_DIR" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: JSKeyborad.app not found in archive"
+            find "$ARCHIVE_DIR" -name "*.app" -type d 2>/dev/null
+            echo "App not found in archive" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+          
           echo "Found app at: $APP_PATH"
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
           cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
           cd ${{ github.workspace }}/build/ipa
           zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
           echo "## IPA Created" >> $GITHUB_STEP_SUMMARY
-          echo "IPA at: ${{ github.workspace }}/build/JSKeyborad.ipa" >> $GITHUB_STEP_SUMMARY
           ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa >> $GITHUB_STEP_SUMMARY
           
       - name: Upload Archive
-        if: always() && steps.archive.outcome == 'success'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
@@ -145,7 +124,7 @@ jobs:
           retention-days: 7
           
       - name: Upload IPA
-        if: always() && success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
