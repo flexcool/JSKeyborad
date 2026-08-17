@@ -33,8 +33,15 @@ jobs:
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            2>&1 | tee build-simulator.log | xcpretty
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log | xcpretty
+          
+      - name: Upload Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Log
+          path: build-output.log
+          retention-days: 7
 
   lint:
     name: Lint
@@ -76,39 +83,32 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO \
-            2>&1 | tee build-archive.log | xcpretty
+            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log | xcpretty
           
-      - name: List Archive Products
+      - name: Upload Archive Log
         if: always()
-        run: |
-          echo "=== Archive structure ==="
-          find ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products -type d -maxdepth 3 2>/dev/null || echo "Archive not found"
-          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "*.app" 2>/dev/null || echo "No .app found"
+        uses: actions/upload-artifact@v4
+        with:
+          name: Archive-Log
+          path: archive-output.log
+          retention-days: 7
           
       - name: Create IPA
         run: |
           set -e
-          ARCHIVE_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive"
-          APP_PATH="${ARCHIVE_PATH}/Products/Applications/JSKeyborad.app"
-          
+          APP_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app"
           if [ ! -d "$APP_PATH" ]; then
             echo "ERROR: JSKeyborad.app not found at $APP_PATH"
-            echo "Archive contents:"
-            find "$ARCHIVE_PATH" -type f -name "*.app" 2>/dev/null
+            find ${{ github.workspace }}/build -name "*.app" 2>/dev/null
             exit 1
           fi
-          
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
           cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
           cd ${{ github.workspace }}/build/ipa
           zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
-          echo "IPA created successfully"
-          
-      - name: Show IPA
-        run: ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
           
       - name: Upload Archive
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
@@ -116,16 +116,9 @@ jobs:
           retention-days: 7
           
       - name: Upload IPA
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
           path: ${{ github.workspace }}/build/JSKeyborad.ipa
           retention-days: 30
-          
-      - name: Upload Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Archive-Build-Log
-          path: build-archive.log
-          retention-days: 7
