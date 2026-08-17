@@ -1,0 +1,44 @@
+disabled_rules:
+  - trailing_whitespace
+  - line_length
+  - function_body_length
+  - type_body_length
+  - file_length
+
+opt_in_rules:
+  - empty_count
+  - closure_spacing
+  - force_unwrapping
+  - implicitly_unwrapped_optional
+  - operator_usage_whitespace
+  - private_outlet
+  - redundant_nil_coalescing
+  - sorted_imports
+
+excluded:
+  - Pods
+  - Carthage
+  - .build
+  - DerivedData
+
+identifier_name:
+  min_length:
+    warning: 2
+    error: 1
+  max_length:
+    warning: 60
+    error: 80
+
+type_name:
+  min_length:
+    warning: 3
+    error: 2
+  max_length:
+    warning: 50
+    error: 60
+
+nesting:
+  type_level:
+    warning: 3
+
+reporter: "xcode"
