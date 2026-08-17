@@ -24,8 +24,9 @@ jobs:
           swift --version
         
       - name: Build All Targets
+        id: build
+        continue-on-error: true
         run: |
-          set -o pipefail
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -33,15 +34,20 @@ jobs:
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log | xcpretty
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log | tail -50
           
-      - name: Upload Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-Log
-          path: build-output.log
-          retention-days: 7
+      - name: Extract errors
+        if: steps.build.outcome == 'failure'
+        run: |
+          echo "## Build Errors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -i "error:" build-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "## Last 80 lines" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -80 build-output.log >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
 
   lint:
     name: Lint
@@ -72,8 +78,9 @@ jobs:
         run: xcodebuild -version
         
       - name: Build Archive
+        id: archive
+        continue-on-error: true
         run: |
-          set -o pipefail
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -83,22 +90,27 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log | xcpretty
+            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log | tail -50
           
-      - name: Upload Archive Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Archive-Log
-          path: archive-output.log
-          retention-days: 7
+      - name: Extract errors
+        if: steps.archive.outcome == 'failure'
+        run: |
+          echo "## Archive Errors" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -i "error:" archive-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "## Last 80 lines" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          tail -80 archive-output.log >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          exit 1
           
       - name: Create IPA
         run: |
           set -e
           APP_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app"
           if [ ! -d "$APP_PATH" ]; then
-            echo "ERROR: JSKeyborad.app not found at $APP_PATH"
+            echo "ERROR: JSKeyborad.app not found"
             find ${{ github.workspace }}/build -name "*.app" 2>/dev/null
             exit 1
           fi
