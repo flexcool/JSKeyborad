@@ -5,6 +5,7 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -22,12 +23,6 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
-        
-      - name: Resolve packages
-        run: |
-          xcodebuild -resolvePackageDependencies \
-            -project JSKeyborad.xcodeproj \
-            -scheme JSKeyborad || true
         
       - name: Build Main App
         run: |
@@ -80,9 +75,8 @@ jobs:
         run: swiftlint lint --reporter github-actions-logging || true
 
   archive:
-    name: Archive IPA
+    name: Archive
     runs-on: macos-14
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     
     steps:
       - name: Checkout
@@ -91,70 +85,55 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
         
-      - name: Clean build directory
-        run: rm -rf ~/Library/Developer/Xcode/DerivedData/JSKeyborad-*
-        
+      - name: Show versions
+        run: |
+          xcodebuild -version
+          
       - name: Build Archive
         run: |
+          set -o pipefail
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
-            -archivePath build/JSKeyborad.xcarchive \
+            -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO | xcpretty
+            ENABLE_BITCODE=NO \
+            | xcpretty
           
-      - name: Export IPA
+      - name: Show Archive
         run: |
-          mkdir -p build/ipa
+          echo "=== Archive contents ==="
+          ls -la ${{ github.workspace }}/build/
+          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/
           
-          cat > build/ExportOptions.plist << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>development</string>
-            <key>stripSwiftSymbols</key>
-            <true/>
-            <key>compileBitcode</key>
-            <false/>
-          </dict>
-          </plist>
-          EOF
-          
-          xcodebuild -exportArchive \
-            -archivePath build/JSKeyborad.xcarchive \
-            -exportOptionsPlist build/ExportOptions.plist \
-            -exportPath build/ipa | xcpretty
-          
-      - name: List IPA files
+      - name: Create IPA
         run: |
-          echo "=== Generated IPA files ==="
-          ls -la build/ipa/
+          mkdir -p ${{ github.workspace }}/build/ipa/Payload
+          cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
+                ${{ github.workspace }}/build/ipa/Payload/
+          cd ${{ github.workspace }}/build/ipa
+          zip -r ../JSKeyborad.ipa Payload
+          cd ${{ github.workspace }}
+          
+      - name: Show IPA
+        run: |
+          echo "=== IPA contents ==="
+          ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
           
       - name: Upload Archive Artifact
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
-          path: build/JSKeyborad.xcarchive
+          path: ${{ github.workspace }}/build/JSKeyborad.xcarchive
           retention-days: 7
           
       - name: Upload IPA Artifact
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
-          path: build/ipa/*.ipa
+          path: ${{ github.workspace }}/build/JSKeyborad.ipa
           retention-days: 30
-          
-      - name: Upload Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Build-Logs
-          path: |
-            ~/Library/Logs/DiagnosticReports/
-          retention-days: 7
