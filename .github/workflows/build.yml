@@ -33,7 +33,19 @@ jobs:
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log | tail -50
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log
+          BUILD_EXIT=$?
+          if [ $BUILD_EXIT -ne 0 ]; then
+            echo "## Build Errors (exit code $BUILD_EXIT)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -i "error:" build-output.log | head -50 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "## Last 60 lines of build output" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -60 build-output.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $BUILD_EXIT
+          fi
 
   lint:
     name: Lint
@@ -75,45 +87,36 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log | tail -50
+            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log
+          ARCHIVE_EXIT=$?
+          if [ $ARCHIVE_EXIT -ne 0 ]; then
+            echo "## Archive Errors (exit code $ARCHIVE_EXIT)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -i "error:" archive-output.log | head -50 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "## Last 60 lines of build output" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -60 archive-output.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit $ARCHIVE_EXIT
+          fi
           
       - name: Create IPA
         run: |
           set -e
           ARCHIVE_DIR="${{ github.workspace }}/build/JSKeyborad.xcarchive"
-          if [ ! -d "$ARCHIVE_DIR" ]; then
-            echo "ERROR: Archive not found at $ARCHIVE_DIR"
-            echo "## Archive Build Errors" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -i "error:" archive-output.log | head -30 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "## Last 100 lines" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -100 archive-output.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
-          
-          echo "## Archive Structure" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          find "$ARCHIVE_DIR" -type d | head -30 >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          
           APP_PATH=$(find "$ARCHIVE_DIR" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
           if [ -z "$APP_PATH" ]; then
             echo "ERROR: JSKeyborad.app not found in archive"
             find "$ARCHIVE_DIR" -name "*.app" -type d 2>/dev/null
-            echo "App not found in archive" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-          
           echo "Found app at: $APP_PATH"
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
           cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
           cd ${{ github.workspace }}/build/ipa
           zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
-          echo "## IPA Created" >> $GITHUB_STEP_SUMMARY
-          ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa >> $GITHUB_STEP_SUMMARY
+          echo "IPA created successfully"
           
       - name: Upload Archive
         if: always()

@@ -228,7 +228,7 @@ extension Template {
 }
 
 @main
-struct TemplateWidget: WidgetBundle {
+struct TemplateWidgetBundle: WidgetBundle {
     var body: some Widget {
         TemplateWidget()
     }

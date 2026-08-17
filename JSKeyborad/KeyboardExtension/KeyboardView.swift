@@ -243,7 +243,7 @@ struct KeyboardView: View {
         }
     }
     
-    private func updateAppearance(isDark: Bool) {
+    func updateAppearance(isDark: Bool) {
         self.isDark = isDark
     }
     
