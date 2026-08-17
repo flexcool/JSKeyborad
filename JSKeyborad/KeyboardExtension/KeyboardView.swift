@@ -15,17 +15,42 @@ struct KeyboardView: View {
     @StateObject private var viewModel = KeyboardViewModel()
     @Environment(\.colorScheme) var colorScheme
     @State private var isDark: Bool = false
+    @State private var isSearchMode: Bool = false
     
     var body: some View {
         VStack(spacing: 0) {
-            TemplateBar
-            SearchBar
-            ScrollView(.horizontal, showsIndicators: false) {
-                FolderTabs
+            if isSearchMode {
+                KeyboardSearchView(
+                    searchText: $viewModel.searchText,
+                    onTemplateSelect: { template in
+                        insertTemplate(template)
+                        isSearchMode = false
+                        viewModel.searchText = ""
+                    },
+                    onCancel: {
+                        isSearchMode = false
+                        viewModel.searchText = ""
+                    }
+                )
+                
+                QuickSearchResultsView(
+                    templates: viewModel.searchResults,
+                    onTemplateSelect: { template in
+                        insertTemplate(template)
+                        isSearchMode = false
+                        viewModel.searchText = ""
+                    }
+                )
+            } else {
+                TemplateBar
+                SearchBarButton
+                ScrollView(.horizontal, showsIndicators: false) {
+                    FolderTabs
+                }
+                .frame(height: 36)
+                
+                TemplatesGrid
             }
-            .frame(height: 36)
-            
-            TemplatesGrid
             
             BottomToolbar
         }
@@ -67,33 +92,25 @@ struct KeyboardView: View {
         .clipped()
     }
     
-    // MARK: - Search Bar
+    // MARK: - Search Bar Button
     
-    private var SearchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(.secondary)
-            
-            TextField("搜索模板...", text: $viewModel.searchText)
-                .font(.subheadline)
-                .onChange(of: viewModel.searchText) { _ in
-                    viewModel.search()
-                }
-            
-            if !viewModel.searchText.isEmpty {
-                Button {
-                    viewModel.searchText = ""
-                    viewModel.search()
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.secondary)
-                }
+    private var SearchBarButton: some View {
+        Button {
+            isSearchMode = true
+        } label: {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.secondary)
+                Text("搜索模板...")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                Spacer()
             }
+            .padding(8)
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(8)
+            .padding(.horizontal)
         }
-        .padding(8)
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
-        .padding(.horizontal)
     }
     
     // MARK: - Folder Tabs

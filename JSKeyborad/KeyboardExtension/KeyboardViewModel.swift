@@ -45,19 +45,25 @@ class KeyboardViewModel: ObservableObject {
             result = result.filter { $0.folderId == folderId }
         }
         
-        if !searchText.isEmpty {
-            let query = searchText.lowercased()
-            result = result.filter {
-                $0.title.lowercased().contains(query) ||
-                $0.content.lowercased().contains(query)
-            }
-        }
-        
         return result.sorted { t1, t2 in
             if t1.isPinned != t2.isPinned {
                 return t1.isPinned
             }
             return t1.useCount > t2.useCount
+        }
+    }
+    
+    var searchResults: [Template] {
+        guard !searchText.isEmpty else { return [] }
+        let query = searchText.lowercased()
+        return templates.filter {
+            $0.title.lowercased().contains(query) ||
+            $0.content.lowercased().contains(query)
+        }.sorted { t1, t2 in
+            if t1.useCount != t2.useCount {
+                return t1.useCount > t2.useCount
+            }
+            return t1.title < t2.title
         }
     }
     
