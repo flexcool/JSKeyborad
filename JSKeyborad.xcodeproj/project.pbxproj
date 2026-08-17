@@ -22,12 +22,20 @@
 		VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
 		JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = JS_ENGINE_SRC_REF /* JSScriptEngine.swift */; };
 		INFOPLIST_SRC /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = INFOPLIST_SRC_REF /* InfoPlist.swift */; };
+		CLIPBOARD_MANAGER_SRC /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */; };
+		USAGE_STATS_MANAGER_SRC /* UsageStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */; };
+		CLIPBOARD_HISTORY_VIEW_SRC /* ClipboardHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_HISTORY_VIEW_SRC_REF /* ClipboardHistoryView.swift */; };
+		KEYBOARD_SEARCH_VIEW_SRC /* KeyboardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */; };
+		USAGE_STATS_VIEW_SRC /* UsageStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = USAGE_STATS_VIEW_SRC_REF /* UsageStatsView.swift */; };
 		KEYBOARD_VIEW_SRC /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */; };
 		KEYBOARD_VIEWCONTROLLER_SRC /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */; };
 		KEYBOARD_VIEWMODEL_SRC /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */; };
 		WIDGET_SRC /* TemplateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = WIDGET_SRC_REF /* TemplateWidget.swift */; };
 		TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
 		FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
+		CLIPBOARD_MANAGER_SRC_1 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */; };
+		USAGE_STATS_MANAGER_SRC_1 /* UsageStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */; };
+		KEYBOARD_SEARCH_VIEW_SRC_1 /* KeyboardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +60,11 @@
 		VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableProcessor.swift; sourceTree = "<group>"; };
 		JS_ENGINE_SRC_REF /* JSScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSScriptEngine.swift; sourceTree = "<group>"; };
 		INFOPLIST_SRC_REF /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
+		CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
+		USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStatsManager.swift; sourceTree = "<group>"; };
+		CLIPBOARD_HISTORY_VIEW_SRC_REF /* ClipboardHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryView.swift; sourceTree = "<group>"; };
+		KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardSearchView.swift; sourceTree = "<group>"; };
+		USAGE_STATS_VIEW_SRC_REF /* UsageStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStatsView.swift; sourceTree = "<group>"; };
 		KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
@@ -105,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				MAIN_APP_SRC_REF /* JSKeyboradApp.swift */,
+				INFOPLIST_SRC_REF /* InfoPlist.swift */,
 				VIEWS_GROUP /* Views */,
 				MODELS_GROUP /* Models */,
 				SERVICES_GROUP /* Services */,
@@ -122,6 +136,9 @@
 				FOLDER_LIST_SRC_REF /* FolderListView.swift */,
 				SETTINGS_VIEW_SRC_REF /* SettingsView.swift */,
 				VARIABLE_INPUT_SRC_REF /* VariableInputView.swift */,
+				CLIPBOARD_HISTORY_VIEW_SRC_REF /* ClipboardHistoryView.swift */,
+				KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */,
+				USAGE_STATS_VIEW_SRC_REF /* UsageStatsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -142,7 +159,8 @@
 				DATASTORE_SRC_REF /* DataStore.swift */,
 				VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */,
 				JS_ENGINE_SRC_REF /* JSScriptEngine.swift */,
-				INFOPLIST_SRC_REF /* InfoPlist.swift */,
+				CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */,
+				USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -308,12 +326,17 @@
 				FOLDER_LIST_SRC /* FolderListView.swift in Sources */,
 				SETTINGS_VIEW_SRC /* SettingsView.swift in Sources */,
 				VARIABLE_INPUT_SRC /* VariableInputView.swift in Sources */,
+				CLIPBOARD_HISTORY_VIEW_SRC /* ClipboardHistoryView.swift in Sources */,
+				KEYBOARD_SEARCH_VIEW_SRC /* KeyboardSearchView.swift in Sources */,
+				USAGE_STATS_VIEW_SRC /* UsageStatsView.swift in Sources */,
 				TEMPLATE_MODEL_SRC /* Template.swift in Sources */,
 				FOLDER_MODEL_SRC /* Folder.swift in Sources */,
 				VARIABLE_MODEL_SRC /* Variable.swift in Sources */,
 				DATASTORE_SRC /* DataStore.swift in Sources */,
 				VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */,
 				JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */,
+				CLIPBOARD_MANAGER_SRC /* ClipboardManager.swift in Sources */,
+				USAGE_STATS_MANAGER_SRC /* UsageStatsManager.swift in Sources */,
 				INFOPLIST_SRC /* InfoPlist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,10 +348,13 @@
 				KEYBOARD_VIEWCONTROLLER_SRC /* KeyboardViewController.swift in Sources */,
 				KEYBOARD_VIEW_SRC /* KeyboardView.swift in Sources */,
 				KEYBOARD_VIEWMODEL_SRC /* KeyboardViewModel.swift in Sources */,
+				KEYBOARD_SEARCH_VIEW_SRC_1 /* KeyboardSearchView.swift in Sources */,
 				TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */,
 				FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */,
 				VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */,
 				DATASTORE_SRC /* DataStore.swift in Sources */,
+				CLIPBOARD_MANAGER_SRC_1 /* ClipboardManager.swift in Sources */,
+				USAGE_STATS_MANAGER_SRC_1 /* UsageStatsManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

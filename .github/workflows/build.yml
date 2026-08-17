@@ -5,7 +5,6 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
 
 jobs:
   build:
@@ -24,35 +23,12 @@ jobs:
           xcodebuild -version
           swift --version
         
-      - name: Build Main App
+      - name: Build All Targets
         run: |
+          set -o pipefail
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
-            -configuration Debug \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            | xcpretty
-      
-      - name: Build Keyboard Extension
-        run: |
-          xcodebuild clean build \
-            -project JSKeyborad.xcodeproj \
-            -scheme JSKeyborad-KeyboardExtension \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
-            -configuration Debug \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            | xcpretty
-            
-      - name: Build Widget Extension
-        run: |
-          xcodebuild clean build \
-            -project JSKeyborad.xcodeproj \
-            -scheme JSKeyborad-WidgetExtension \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.2' \
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
@@ -75,7 +51,7 @@ jobs:
         run: swiftlint lint --reporter github-actions-logging || true
 
   archive:
-    name: Archive
+    name: Archive IPA
     runs-on: macos-14
     
     steps:
@@ -86,9 +62,8 @@ jobs:
         run: sudo xcode-select -s /Applications/Xcode.app
         
       - name: Show versions
-        run: |
-          xcodebuild -version
-          
+        run: xcodebuild -version
+        
       - name: Build Archive
         run: |
           set -o pipefail
@@ -98,17 +73,11 @@ jobs:
             -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO \
             | xcpretty
-          
-      - name: Show Archive
-        run: |
-          echo "=== Archive contents ==="
-          ls -la ${{ github.workspace }}/build/
-          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/
           
       - name: Create IPA
         run: |
@@ -116,22 +85,19 @@ jobs:
           cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
                 ${{ github.workspace }}/build/ipa/Payload/
           cd ${{ github.workspace }}/build/ipa
-          zip -r ../JSKeyborad.ipa Payload
-          cd ${{ github.workspace }}
+          zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
           
       - name: Show IPA
-        run: |
-          echo "=== IPA contents ==="
-          ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
+        run: ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
           
-      - name: Upload Archive Artifact
+      - name: Upload Archive
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
           path: ${{ github.workspace }}/build/JSKeyborad.xcarchive
           retention-days: 7
           
-      - name: Upload IPA Artifact
+      - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
