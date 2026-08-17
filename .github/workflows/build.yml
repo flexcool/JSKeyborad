@@ -100,11 +100,22 @@ jobs:
       - name: Create IPA
         if: success()
         run: |
+          echo "=== Archive contents ==="
+          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/ || true
+          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/ || true
+          
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
-          cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
-                ${{ github.workspace }}/build/ipa/Payload/
-          cd ${{ github.workspace }}/build/ipa
-          zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+          
+          if [ -d "${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app" ]; then
+            cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
+                  ${{ github.workspace }}/build/ipa/Payload/
+            cd ${{ github.workspace }}/build/ipa
+            zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+          else
+            echo "ERROR: JSKeyborad.app not found!"
+            find ${{ github.workspace }}/build -name "*.app" -o -name "*.appex" | head -20
+            exit 1
+          fi
           
       - name: Show IPA
         if: success()
