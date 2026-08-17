@@ -25,6 +25,7 @@ jobs:
         
       - name: Build All Targets
         run: |
+          set -o pipefail
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -33,21 +34,7 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            2>&1 | tee build-simulator.log || true
-          
-      - name: Show errors
-        if: failure() || always()
-        run: |
-          echo "=== ERRORS ==="
-          grep -i "error:" build-simulator.log | head -30 || true
-          
-      - name: Upload Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Simulator-Build-Log
-          path: build-simulator.log
-          retention-days: 7
+            2>&1 | tee build-simulator.log | xcpretty
 
   lint:
     name: Lint
@@ -79,6 +66,7 @@ jobs:
         
       - name: Build Archive
         run: |
+          set -o pipefail
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -89,40 +77,38 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO \
-            2>&1 | tee build-archive.log || true
+            2>&1 | tee build-archive.log | xcpretty
           
-      - name: Show errors
-        if: failure() || always()
+      - name: List Archive Products
+        if: always()
         run: |
-          echo "=== ERRORS ==="
-          grep -i "error:" build-archive.log | head -30 || true
+          echo "=== Archive structure ==="
+          find ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products -type d -maxdepth 3 2>/dev/null || echo "Archive not found"
+          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "*.app" 2>/dev/null || echo "No .app found"
           
       - name: Create IPA
-        if: success()
         run: |
-          echo "=== Archive contents ==="
-          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/ || true
-          ls -la ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/ || true
+          set -e
+          ARCHIVE_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive"
+          APP_PATH="${ARCHIVE_PATH}/Products/Applications/JSKeyborad.app"
           
-          mkdir -p ${{ github.workspace }}/build/ipa/Payload
-          
-          if [ -d "${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app" ]; then
-            cp -r ${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app \
-                  ${{ github.workspace }}/build/ipa/Payload/
-            cd ${{ github.workspace }}/build/ipa
-            zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
-          else
-            echo "ERROR: JSKeyborad.app not found!"
-            find ${{ github.workspace }}/build -name "*.app" -o -name "*.appex" | head -20
+          if [ ! -d "$APP_PATH" ]; then
+            echo "ERROR: JSKeyborad.app not found at $APP_PATH"
+            echo "Archive contents:"
+            find "$ARCHIVE_PATH" -type f -name "*.app" 2>/dev/null
             exit 1
           fi
           
+          mkdir -p ${{ github.workspace }}/build/ipa/Payload
+          cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
+          cd ${{ github.workspace }}/build/ipa
+          zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+          echo "IPA created successfully"
+          
       - name: Show IPA
-        if: success()
         run: ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
           
       - name: Upload Archive
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
@@ -130,7 +116,6 @@ jobs:
           retention-days: 7
           
       - name: Upload IPA
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
