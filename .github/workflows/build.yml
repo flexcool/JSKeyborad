@@ -108,19 +108,36 @@ jobs:
       - name: Create IPA
         run: |
           set -e
+          echo "## Archive contents" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -type d | head -30 >> $GITHUB_STEP_SUMMARY || true
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          
+          find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "*.app" -type d 2>/dev/null
+          
           APP_PATH="${{ github.workspace }}/build/JSKeyborad.xcarchive/Products/Applications/JSKeyborad.app"
           if [ ! -d "$APP_PATH" ]; then
-            echo "ERROR: JSKeyborad.app not found"
-            find ${{ github.workspace }}/build -name "*.app" 2>/dev/null
-            exit 1
+            echo "JSKeyborad.app not at expected path, searching..."
+            APP_PATH=$(find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
+            if [ -z "$APP_PATH" ]; then
+              echo "ERROR: JSKeyborad.app not found anywhere in archive"
+              find ${{ github.workspace }}/build -name "*.app" -type d 2>/dev/null
+              echo "## App not found" >> $GITHUB_STEP_SUMMARY
+              echo "JSKeyborad.app not found in archive" >> $GITHUB_STEP_SUMMARY
+              exit 1
+            fi
           fi
+          echo "Found app at: $APP_PATH"
           mkdir -p ${{ github.workspace }}/build/ipa/Payload
           cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
           cd ${{ github.workspace }}/build/ipa
           zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+          echo "## IPA Created" >> $GITHUB_STEP_SUMMARY
+          echo "IPA at: ${{ github.workspace }}/build/JSKeyborad.ipa" >> $GITHUB_STEP_SUMMARY
+          ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa >> $GITHUB_STEP_SUMMARY
           
       - name: Upload Archive
-        if: success()
+        if: always() && steps.archive.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive
@@ -128,7 +145,7 @@ jobs:
           retention-days: 7
           
       - name: Upload IPA
-        if: success()
+        if: always() && success()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
