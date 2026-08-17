@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ClipboardHistoryView: View {
     @ObservedObject var clipboardManager = ClipboardManager.shared

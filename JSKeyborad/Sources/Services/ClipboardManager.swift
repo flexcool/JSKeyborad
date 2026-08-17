@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 class ClipboardManager: ObservableObject {
     static let shared = ClipboardManager()
