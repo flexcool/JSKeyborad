@@ -21,17 +21,64 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
         
-      - name: Build for Release
+      - name: Show versions
         run: |
-          xcodebuild clean build \
+          xcodebuild -version
+          swift --version
+          
+      - name: Clean build directory
+        run: rm -rf ~/Library/Developer/Xcode/DerivedData/JSKeyborad-*
+        
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
+            -archivePath build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            | xcpretty
+            ENABLE_BITCODE=NO | xcpretty
+          
+      - name: Export IPA
+        run: |
+          mkdir -p build/ipa
+          
+          cat > build/ExportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>development</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>compileBitcode</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          
+          xcodebuild -exportArchive \
+            -archivePath build/JSKeyborad.xcarchive \
+            -exportOptionsPlist build/ExportOptions.plist \
+            -exportPath build/ipa | xcpretty
+            
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSKeyborad-v${{ steps.version.outputs.VERSION }}
+          path: build/ipa/*.ipa
+          retention-days: 90
+            
+      - name: Upload Archive Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSKeyborad-Archive-v${{ steps.version.outputs.VERSION }}
+          path: build/JSKeyborad.xcarchive
+          retention-days: 90
             
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -42,13 +89,20 @@ jobs:
             
             ### 新功能
             - ⌨️ 自定义键盘扩展
-            - 📱 桌面小组件
-            - 🎨 全新界面设计
+            - 📱 桌面小组件（小号/中号）
+            - 📋 剪贴板历史管理
+            - 📊 使用统计图表
+            - 🔍 键盘快速搜索
             
             ### 安装说明
             1. 下载 `JSKeyborad.ipa`
             2. 使用 AltStore 或 Sideloadly 安装
             3. 在 设置 > 通用 > 键盘 中添加 JSKeyborad
+            4. 在任意输入框长按地球键切换到 JSKeyborad
+            
+            ### 注意事项
+            - 无需「允许完全访问」权限
+            - 所有数据仅存储在设备本地
           draft: false
           prerelease: false
         env:

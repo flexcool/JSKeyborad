@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build & Test
     runs-on: macos-14
     
     steps:
@@ -22,6 +22,12 @@ jobs:
         run: |
           xcodebuild -version
           swift --version
+        
+      - name: Resolve packages
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project JSKeyborad.xcodeproj \
+            -scheme JSKeyborad || true
         
       - name: Build Main App
         run: |
@@ -72,3 +78,83 @@ jobs:
         
       - name: Run SwiftLint
         run: swiftlint lint --reporter github-actions-logging || true
+
+  archive:
+    name: Archive IPA
+    runs-on: macos-14
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+        
+      - name: Clean build directory
+        run: rm -rf ~/Library/Developer/Xcode/DerivedData/JSKeyborad-*
+        
+      - name: Build Archive
+        run: |
+          xcodebuild archive \
+            -project JSKeyborad.xcodeproj \
+            -scheme JSKeyborad \
+            -archivePath build/JSKeyborad.xcarchive \
+            -destination 'generic/platform=iOS' \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            ENABLE_BITCODE=NO | xcpretty
+          
+      - name: Export IPA
+        run: |
+          mkdir -p build/ipa
+          
+          cat > build/ExportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>development</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>compileBitcode</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          
+          xcodebuild -exportArchive \
+            -archivePath build/JSKeyborad.xcarchive \
+            -exportOptionsPlist build/ExportOptions.plist \
+            -exportPath build/ipa | xcpretty
+          
+      - name: List IPA files
+        run: |
+          echo "=== Generated IPA files ==="
+          ls -la build/ipa/
+          
+      - name: Upload Archive Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSKeyborad-Archive
+          path: build/JSKeyborad.xcarchive
+          retention-days: 7
+          
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: JSKeyborad-IPA
+          path: build/ipa/*.ipa
+          retention-days: 30
+          
+      - name: Upload Build Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Logs
+          path: |
+            ~/Library/Logs/DiagnosticReports/
+          retention-days: 7
