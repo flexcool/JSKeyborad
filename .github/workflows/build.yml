@@ -33,9 +33,15 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            2>&1 | tail -80
-          echo "Exit: ${PIPESTATUS[0]}"
-          exit ${PIPESTATUS[0]}
+            2>&1 | tee build.log | grep -E "(error:|BUILD FAILED|BUILD SUCCEEDED|error\[)" || true
+          BUILD_EXIT=${PIPESTATUS[0]}
+          echo ""
+          echo "=== ALL ERROR LINES ==="
+          grep -i "error" build.log | head -30 || echo "No error lines found"
+          echo ""
+          echo "=== LAST 20 LINES ==="
+          tail -20 build.log
+          exit $BUILD_EXIT
 
   lint:
     name: Lint
@@ -77,10 +83,18 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO \
-            > archive.log 2>&1
-          ARCHIVE_EXIT=$?
-          echo "Archive exit code: $ARCHIVE_EXIT"
-          tail -100 archive.log
+            2>&1 | tee archive.log | grep -E "(error:|warning:.*deprecated|BUILD FAILED|BUILD SUCCEEDED|Failed|error\[)" || true
+          ARCHIVE_EXIT=${PIPESTATUS[0]}
+          echo ""
+          echo "========================================="
+          echo "ARCHIVE EXIT CODE: $ARCHIVE_EXIT"
+          echo "========================================="
+          echo ""
+          echo "=== ALL ERROR LINES ==="
+          grep -i "error" archive.log | head -30 || echo "No error lines found"
+          echo ""
+          echo "=== LAST 30 LINES ==="
+          tail -30 archive.log
           exit $ARCHIVE_EXIT
           
       - name: Export IPA
