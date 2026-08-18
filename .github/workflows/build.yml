@@ -76,51 +76,49 @@ jobs:
             CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
             ENABLE_BITCODE=NO \
-            2>&1 | tail -80
-          echo "Exit code: ${PIPESTATUS[0]}"
-          exit ${PIPESTATUS[0]}
+            > archive-output.log 2>&1
+          EXIT=$?
+          echo "Archive exit code: $EXIT"
+          exit $EXIT
           
-      - name: Export IPA
+      - name: Find app and create IPA
         run: |
-          cat > exportOptions.plist << 'EOF'
+          set -e
+          ARCHIVE_DIR="${{ github.workspace }}/build/JSKeyborad.xcarchive"
+          echo "Looking for .app in archive..."
+          find "$ARCHIVE_DIR" -name "*.app" -type d 2>/dev/null
+          find "$ARCHIVE_DIR" -name "*.appex" -type d 2>/dev/null
+          echo "---"
+          echo "Products directory:"
+          ls -la "$ARCHIVE_DIR/Products/" 2>/dev/null || echo "Products dir not found"
+          echo "---"
+          APP_PATH=$(find "$ARCHIVE_DIR" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
+          if [ -n "$APP_PATH" ]; then
+            echo "Found app: $APP_PATH"
+            mkdir -p ${{ github.workspace }}/build/ipa/Payload
+            cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
+            cd ${{ github.workspace }}/build/ipa
+            zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+            echo "IPA created"
+            ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
+          else
+            echo "No .app found, trying export..."
+            cat > /tmp/exportOptions.plist << PLIST
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
             <key>method</key>
             <string>ad-hoc</string>
-            <key>stripSwiftSymbols</key>
-            <true/>
-            <key>compileBitcode</key>
-            <false/>
           </dict>
           </plist>
-          EOF
-          
-          xcodebuild -exportArchive \
-            -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
-            -exportPath ${{ github.workspace }}/build/export \
-            -exportOptionsPlist exportOptions.plist \
-            2>&1 | tail -20
-          echo "Exit code: ${PIPESTATUS[0]}"
-          
-          if [ -f "${{ github.workspace }}/build/export/JSKeyborad.ipa" ]; then
-            echo "IPA exported successfully"
-            ls -lh ${{ github.workspace }}/build/export/JSKeyborad.ipa
-          else
-            echo "ERROR: IPA not found at expected path"
-            find ${{ github.workspace }}/build/export -type f 2>/dev/null
+          PLIST
+            xcodebuild -exportArchive \
+              -archivePath "$ARCHIVE_DIR" \
+              -exportPath ${{ github.workspace }}/build \
+              -exportOptionsPlist /tmp/exportOptions.plist \
+              2>&1 || true
             find ${{ github.workspace }}/build -name "*.ipa" 2>/dev/null
-            # Fallback: try to find .app in archive and create IPA manually
-            APP_PATH=$(find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
-            if [ -n "$APP_PATH" ]; then
-              echo "Found app at: $APP_PATH, creating IPA manually"
-              mkdir -p ${{ github.workspace }}/build/ipa/Payload
-              cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
-              cd ${{ github.workspace }}/build/ipa
-              zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
-              echo "IPA created manually"
-            fi
           fi
           
       - name: Upload Archive
@@ -136,5 +134,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
-          path: ${{ github.workspace }}/build/export/JSKeyborad.ipa
+          path: ${{ github.workspace }}/build/JSKeyborad.ipa
           retention-days: 30
