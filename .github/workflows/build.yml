@@ -36,17 +36,16 @@ jobs:
             > build.log 2>&1
           BUILD_EXIT=$?
           echo "Build exit code: $BUILD_EXIT"
-          if [ $BUILD_EXIT -ne 0 ]; then
-            echo "## Build Errors" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -i "error:" build.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "## Last 100 lines" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -100 build.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
+          tail -100 build.log
           exit $BUILD_EXIT
+          
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 1
 
   lint:
     name: Lint
@@ -91,17 +90,16 @@ jobs:
             > archive.log 2>&1
           ARCHIVE_EXIT=$?
           echo "Archive exit code: $ARCHIVE_EXIT"
-          if [ $ARCHIVE_EXIT -ne 0 ]; then
-            echo "## Archive Errors" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -i "error:" archive.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "## Last 100 lines" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -100 archive.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
+          tail -100 archive.log
           exit $ARCHIVE_EXIT
+
+      - name: Upload archive log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: archive-log
+          path: archive.log
+          retention-days: 1
           
       - name: Create IPA
         run: |
