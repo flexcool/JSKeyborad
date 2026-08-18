@@ -24,10 +24,7 @@ jobs:
           swift --version
         
       - name: Build All Targets
-        id: buildstep
-        continue-on-error: true
         run: |
-          set +e
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -35,21 +32,10 @@ jobs:
             -configuration Debug \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log
-          echo "XCODEBUILD_EXIT=${PIPESTATUS[0]}" >> "$GITHUB_ENV"
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tail -80
+          echo "Exit code: ${PIPESTATUS[0]}"
           exit ${PIPESTATUS[0]}
-          
-      - name: Show build errors
-        if: steps.buildstep.outcome == 'failure'
-        run: |
-          echo '```' > summary.txt
-          grep -i "error:" build-output.log | head -50 >> summary.txt || echo "No error: lines" >> summary.txt
-          echo '```' >> summary.txt
-          echo '```' >> summary.txt
-          tail -100 build-output.log >> summary.txt || true
-          echo '```' >> summary.txt
-          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
-          exit 1
 
   lint:
     name: Lint
@@ -80,61 +66,62 @@ jobs:
         run: xcodebuild -version
         
       - name: Build Archive
-        id: archivestep
-        continue-on-error: true
         run: |
-          set +e
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
             -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_IDENTITY="-" \
             CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO 2>&1 | tee archive-output.log
-          echo "ARCHIVE_EXIT=${PIPESTATUS[0]}" >> "$GITHUB_ENV"
+            ENABLE_BITCODE=NO \
+            2>&1 | tail -80
+          echo "Exit code: ${PIPESTATUS[0]}"
           exit ${PIPESTATUS[0]}
-
-      - name: Show archive errors
-        if: steps.archivestep.outcome == 'failure'
-        run: |
-          echo '```' > summary.txt
-          grep -i "error:" archive-output.log | head -50 >> summary.txt || echo "No error: lines" >> summary.txt
-          echo '```' >> summary.txt
-          echo '```' >> summary.txt
-          tail -100 archive-output.log >> summary.txt || true
-          echo '```' >> summary.txt
-          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
-          exit 1
           
-      - name: Create IPA
+      - name: Export IPA
         run: |
-          set -e
-          ARCHIVE_DIR="${{ github.workspace }}/build/JSKeyborad.xcarchive"
-          echo "Archive contents:" 
-          find "$ARCHIVE_DIR" -type d | head -30
-          echo "---"
-          find "$ARCHIVE_DIR" -name "*.app" -o -name "*.appex" | head -20
-          echo "---"
-          find "$ARCHIVE_DIR/Products" -type f | head -20
-          echo "---"
-          APP_PATH=$(find "$ARCHIVE_DIR" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
-          if [ -z "$APP_PATH" ]; then
-            echo "ERROR: JSKeyborad.app not found in archive"
-            find "$ARCHIVE_DIR" -name "*.app" -type d 2>/dev/null
-            find "$ARCHIVE_DIR" -name "*.appex" -type d 2>/dev/null
-            # Try to find any app bundle
-            find "$ARCHIVE_DIR" -name "*.app" -o -name "*.appex" 2>/dev/null
-            exit 1
+          cat > exportOptions.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>ad-hoc</string>
+            <key>stripSwiftSymbols</key>
+            <true/>
+            <key>compileBitcode</key>
+            <false/>
+          </dict>
+          </plist>
+          EOF
+          
+          xcodebuild -exportArchive \
+            -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
+            -exportPath ${{ github.workspace }}/build/export \
+            -exportOptionsPlist exportOptions.plist \
+            2>&1 | tail -20
+          echo "Exit code: ${PIPESTATUS[0]}"
+          
+          if [ -f "${{ github.workspace }}/build/export/JSKeyborad.ipa" ]; then
+            echo "IPA exported successfully"
+            ls -lh ${{ github.workspace }}/build/export/JSKeyborad.ipa
+          else
+            echo "ERROR: IPA not found at expected path"
+            find ${{ github.workspace }}/build/export -type f 2>/dev/null
+            find ${{ github.workspace }}/build -name "*.ipa" 2>/dev/null
+            # Fallback: try to find .app in archive and create IPA manually
+            APP_PATH=$(find ${{ github.workspace }}/build/JSKeyborad.xcarchive -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
+            if [ -n "$APP_PATH" ]; then
+              echo "Found app at: $APP_PATH, creating IPA manually"
+              mkdir -p ${{ github.workspace }}/build/ipa/Payload
+              cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
+              cd ${{ github.workspace }}/build/ipa
+              zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+              echo "IPA created manually"
+            fi
           fi
-          echo "Found app at: $APP_PATH"
-          mkdir -p ${{ github.workspace }}/build/ipa/Payload
-          cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
-          cd ${{ github.workspace }}/build/ipa
-          zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
-          echo "IPA created successfully"
           
       - name: Upload Archive
         if: always()
@@ -149,5 +136,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-IPA
-          path: ${{ github.workspace }}/build/JSKeyborad.ipa
+          path: ${{ github.workspace }}/build/export/JSKeyborad.ipa
           retention-days: 30
