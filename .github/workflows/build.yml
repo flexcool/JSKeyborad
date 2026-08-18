@@ -113,10 +113,20 @@ jobs:
         run: |
           set -e
           ARCHIVE_DIR="${{ github.workspace }}/build/JSKeyborad.xcarchive"
+          echo "Archive contents:" 
+          find "$ARCHIVE_DIR" -type d | head -30
+          echo "---"
+          find "$ARCHIVE_DIR" -name "*.app" -o -name "*.appex" | head -20
+          echo "---"
+          find "$ARCHIVE_DIR/Products" -type f | head -20
+          echo "---"
           APP_PATH=$(find "$ARCHIVE_DIR" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
           if [ -z "$APP_PATH" ]; then
             echo "ERROR: JSKeyborad.app not found in archive"
             find "$ARCHIVE_DIR" -name "*.app" -type d 2>/dev/null
+            find "$ARCHIVE_DIR" -name "*.appex" -type d 2>/dev/null
+            # Try to find any app bundle
+            find "$ARCHIVE_DIR" -name "*.app" -o -name "*.appex" 2>/dev/null
             exit 1
           fi
           echo "Found app at: $APP_PATH"
