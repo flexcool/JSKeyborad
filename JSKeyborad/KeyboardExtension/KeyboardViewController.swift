@@ -84,7 +84,4 @@ extension KeyboardViewController: KeyboardContextProviding {
         textDocumentProxy.documentContextAfterInput
     }
     
-    var hasFullAccess: Bool {
-        super.hasFullAccess
-    }
 }
