@@ -24,8 +24,10 @@ jobs:
           swift --version
         
       - name: Build All Targets
+        id: buildstep
+        continue-on-error: true
         run: |
-          set -o pipefail
+          set +e
           xcodebuild clean build \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -34,18 +36,20 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee build-output.log
-          BUILD_EXIT=$?
-          if [ $BUILD_EXIT -ne 0 ]; then
-            echo "## Build Errors (exit code $BUILD_EXIT)" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -i "error:" build-output.log | head -50 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "## Last 60 lines of build output" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -60 build-output.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit $BUILD_EXIT
-          fi
+          echo "XCODEBUILD_EXIT=${PIPESTATUS[0]}" >> "$GITHUB_ENV"
+          exit ${PIPESTATUS[0]}
+          
+      - name: Show build errors
+        if: steps.buildstep.outcome == 'failure'
+        run: |
+          echo '```' > summary.txt
+          grep -i "error:" build-output.log | head -50 >> summary.txt || echo "No error: lines" >> summary.txt
+          echo '```' >> summary.txt
+          echo '```' >> summary.txt
+          tail -100 build-output.log >> summary.txt || true
+          echo '```' >> summary.txt
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+          exit 1
 
   lint:
     name: Lint
@@ -76,8 +80,10 @@ jobs:
         run: xcodebuild -version
         
       - name: Build Archive
+        id: archivestep
+        continue-on-error: true
         run: |
-          set -o pipefail
+          set +e
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
@@ -88,18 +94,20 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             ENABLE_BITCODE=NO 2>&1 | tee archive-output.log
-          ARCHIVE_EXIT=$?
-          if [ $ARCHIVE_EXIT -ne 0 ]; then
-            echo "## Archive Errors (exit code $ARCHIVE_EXIT)" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -i "error:" archive-output.log | head -50 >> $GITHUB_STEP_SUMMARY || echo "No error lines found" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "## Last 60 lines of build output" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -60 archive-output.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit $ARCHIVE_EXIT
-          fi
+          echo "ARCHIVE_EXIT=${PIPESTATUS[0]}" >> "$GITHUB_ENV"
+          exit ${PIPESTATUS[0]}
+
+      - name: Show archive errors
+        if: steps.archivestep.outcome == 'failure'
+        run: |
+          echo '```' > summary.txt
+          grep -i "error:" archive-output.log | head -50 >> summary.txt || echo "No error: lines" >> summary.txt
+          echo '```' >> summary.txt
+          echo '```' >> summary.txt
+          tail -100 archive-output.log >> summary.txt || true
+          echo '```' >> summary.txt
+          cat summary.txt >> "$GITHUB_STEP_SUMMARY"
+          exit 1
           
       - name: Create IPA
         run: |
