@@ -26,58 +26,52 @@ jobs:
           xcodebuild -version
           swift --version
           
-      - name: Clean build directory
-        run: rm -rf ~/Library/Developer/Xcode/DerivedData/JSKeyborad-*
-        
       - name: Build Archive
         run: |
           xcodebuild archive \
             -project JSKeyborad.xcodeproj \
             -scheme JSKeyborad \
-            -archivePath build/JSKeyborad.xcarchive \
+            -archivePath ${{ github.workspace }}/build/JSKeyborad.xcarchive \
             -destination 'generic/platform=iOS' \
             -configuration Release \
-            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            ENABLE_BITCODE=NO | xcpretty
+            ENABLE_BITCODE=NO \
+            2>&1 | tail -50
+          exit ${PIPESTATUS[0]}
           
-      - name: Export IPA
+      - name: Create IPA
         run: |
-          mkdir -p build/ipa
-          
-          cat > build/ExportOptions.plist << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key>
-            <string>development</string>
-            <key>stripSwiftSymbols</key>
-            <true/>
-            <key>compileBitcode</key>
-            <false/>
-          </dict>
-          </plist>
-          EOF
-          
-          xcodebuild -exportArchive \
-            -archivePath build/JSKeyborad.xcarchive \
-            -exportOptionsPlist build/ExportOptions.plist \
-            -exportPath build/ipa | xcpretty
+          set -e
+          ARCHIVE="${{ github.workspace }}/build/JSKeyborad.xcarchive"
+          APP_PATH=$(find "$ARCHIVE" -name "JSKeyborad.app" -type d 2>/dev/null | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: JSKeyborad.app not found in archive"
+            find "$ARCHIVE" -name "*.app" -o -name "*.appex" 2>/dev/null
+            exit 1
+          fi
+          echo "Found app: $APP_PATH"
+          mkdir -p ${{ github.workspace }}/build/ipa/Payload
+          cp -r "$APP_PATH" ${{ github.workspace }}/build/ipa/Payload/
+          cd ${{ github.workspace }}/build/ipa
+          zip -r ${{ github.workspace }}/build/JSKeyborad.ipa Payload
+          ls -lh ${{ github.workspace }}/build/JSKeyborad.ipa
             
       - name: Upload IPA Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-v${{ steps.version.outputs.VERSION }}
-          path: build/ipa/*.ipa
+          path: ${{ github.workspace }}/build/JSKeyborad.ipa
           retention-days: 90
             
       - name: Upload Archive Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: JSKeyborad-Archive-v${{ steps.version.outputs.VERSION }}
-          path: build/JSKeyborad.xcarchive
+          path: ${{ github.workspace }}/build/JSKeyborad.xcarchive
           retention-days: 90
             
       - name: Create Release
