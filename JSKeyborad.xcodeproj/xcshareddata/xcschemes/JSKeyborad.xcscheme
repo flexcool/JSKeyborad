@@ -34,20 +34,6 @@
                ReferencedContainer = "container:JSKeyborad.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WIDGET_TARGET"
-               BuildableName = "JSKeyborad-WidgetExtension.appex"
-               BlueprintName = "JSKeyborad-WidgetExtension"
-               ReferencedContainer = "container:JSKeyborad.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

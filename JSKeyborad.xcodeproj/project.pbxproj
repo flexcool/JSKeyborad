@@ -30,7 +30,6 @@
 		KEYBOARD_VIEW_SRC /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */; };
 		KEYBOARD_VIEWCONTROLLER_SRC /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */; };
 		KEYBOARD_VIEWMODEL_SRC /* KeyboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */; };
-		WIDGET_SRC /* TemplateWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = WIDGET_SRC_REF /* TemplateWidget.swift */; };
 		TEMPLATE_MODEL_SRC_1 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
 		FOLDER_MODEL_SRC_1 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
 		CLIPBOARD_MANAGER_SRC_1 /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */; };
@@ -40,17 +39,14 @@
 		VARIABLE_PROCESSOR_SRC_1 /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
 		TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
 		FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
-		KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		WIDGET_EMBED /* JSKeyborad-WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
+		KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		JSKeyboradApp.app /* JSKeyborad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSKeyborad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "JSKeyborad-KeyboardExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "JSKeyborad-WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		JSKeyborad.entitlements /* JSKeyborad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JSKeyborad.entitlements; sourceTree = "<group>"; };
 		KEYBOARD.entitlements /* KeyboardExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KeyboardExtension.entitlements; sourceTree = "<group>"; };
-		WIDGET.entitlements /* WidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetExtension.entitlements; sourceTree = "<group>"; };
+		KEYBOARD_PLIST /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		MAIN_APP_SRC_REF /* JSKeyboradApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSKeyboradApp.swift; sourceTree = "<group>"; };
 		CONTENT_VIEW_SRC_REF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		TEMPLATE_LIST_SRC_REF /* TemplateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateListView.swift; sourceTree = "<group>"; };
@@ -74,7 +70,6 @@
 		KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewModel.swift; sourceTree = "<group>"; };
-		WIDGET_SRC_REF /* TemplateWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWidget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,13 +87,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		WIDGET_FRAMEWORKS /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,13 +96,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = KEYBOARD_TARGET;
 			remoteInfo = JSKeyborad-KeyboardExtension;
-		};
-		WIDGET_PROXY = {
-			isa = PBXContainerItemProxy;
-			containerPortal = PROJECT_OBJECT /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = WIDGET_TARGET;
-			remoteInfo = JSKeyborad-WidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -132,7 +113,6 @@
 			children = (
 				SOURCES_GROUP /* Sources */,
 				KEYBOARD_GROUP /* KeyboardExtension */,
-				WIDGET_GROUP /* WidgetExtension */,
 			);
 			path = JSKeyborad;
 			sourceTree = "<group>";
@@ -194,16 +174,9 @@
 				KEYBOARD_VIEWCONTROLLER_SRC_REF /* KeyboardViewController.swift */,
 				KEYBOARD_VIEW_SRC_REF /* KeyboardView.swift */,
 				KEYBOARD_VIEWMODEL_SRC_REF /* KeyboardViewModel.swift */,
+				KEYBOARD_PLIST /* Info.plist */,
 			);
 			path = KeyboardExtension;
-			sourceTree = "<group>";
-		};
-		WIDGET_GROUP /* WidgetExtension */ = {
-			isa = PBXGroup;
-			children = (
-				WIDGET_SRC_REF /* TemplateWidget.swift */,
-			);
-			path = WidgetExtension;
 			sourceTree = "<group>";
 		};
 		PRODUCTS_GROUP /* Products */ = {
@@ -211,7 +184,6 @@
 			children = (
 				JSKeyboradApp.app /* JSKeyborad.app */,
 				KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */,
-				WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -232,7 +204,6 @@
 			);
 			dependencies = (
 				KEYBOARD_DEPENDENCY,
-				WIDGET_DEPENDENCY,
 			);
 			name = JSKeyborad;
 			productName = JSKeyborad;
@@ -256,23 +227,6 @@
 			productReference = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		WIDGET_TARGET /* JSKeyborad-WidgetExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = WIDGET_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-WidgetExtension" */;
-			buildPhases = (
-				WIDGET_SOURCES /* Sources */,
-				WIDGET_FRAMEWORKS /* Frameworks */,
-				WIDGET_RESOURCES /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "JSKeyborad-WidgetExtension";
-			productName = "JSKeyborad-WidgetExtension";
-			productReference = WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -287,9 +241,6 @@
 						CreatedOnToolsVersion = 15.4;
 					};
 					KEYBOARD_TARGET = {
-						CreatedOnToolsVersion = 15.4;
-					};
-					WIDGET_TARGET = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
@@ -310,7 +261,6 @@
 			targets = (
 				MAIN_APP_TARGET /* JSKeyborad */,
 				KEYBOARD_TARGET /* JSKeyborad-KeyboardExtension */,
-				WIDGET_TARGET /* JSKeyborad-WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -324,13 +274,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		KEYBOARD_RESOURCES /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		WIDGET_RESOURCES /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -384,16 +327,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		WIDGET_SOURCES /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				WIDGET_SRC /* TemplateWidget.swift in Sources */,
-				TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */,
-				FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -404,7 +337,6 @@
 			dstSubfolderSpec = 13;
 			files = (
 				KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */,
-				WIDGET_EMBED /* JSKeyborad-WidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -416,11 +348,6 @@
 			isa = PBXTargetDependency;
 			target = KEYBOARD_TARGET /* JSKeyborad-KeyboardExtension */;
 			targetProxy = KEYBOARD_PROXY;
-		};
-		WIDGET_DEPENDENCY = {
-			isa = PBXTargetDependency;
-			target = WIDGET_TARGET /* JSKeyborad-WidgetExtension */;
-			targetProxy = WIDGET_PROXY;
 		};
 /* End PBXTargetDependency section */
 
@@ -610,9 +537,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
-				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.keyboard-service\"; }";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KeyboardExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -638,9 +564,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "JSKeyborad";
-				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.keyboard-service\"; }";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KeyboardExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -648,62 +573,6 @@
 				);
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.keyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		WIDGET_DEBUG /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = JSKeyborad/WidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Widget";
-				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.widgetkit-extension\"; }";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.widget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		WIDGET_RELEASE /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = JSKeyborad/WidgetExtension.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Widget";
-				INFOPLIST_KEY_NSExtension = "{ NSExtensionPointIdentifier = \"com.apple.widgetkit-extension\"; }";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jskeyborad.app.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -740,15 +609,6 @@
 			buildConfigurations = (
 				KEYBOARD_DEBUG /* Debug */,
 				KEYBOARD_RELEASE /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		WIDGET_CONFIG_LIST /* Build configuration list for PBXNativeTarget "JSKeyborad-WidgetExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				WIDGET_DEBUG /* Debug */,
-				WIDGET_RELEASE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
