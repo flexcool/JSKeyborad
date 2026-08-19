@@ -4,6 +4,7 @@ import SwiftUI
 class KeyboardViewController: UIInputViewController {
     
     private var hostingController: UIHostingController<KeyboardView>?
+    private var heightConstraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,9 +62,11 @@ class KeyboardViewController: UIInputViewController {
             height = 260
         }
         
-        let screenHeight = UIScreen.main.bounds.height
-        if screenHeight > 667 {
-            view.heightAnchor.constraint(greaterThanOrEqualToConstant: height).isActive = true
+        if heightConstraint == nil {
+            heightConstraint = view.heightAnchor.constraint(equalToConstant: height)
+            heightConstraint?.isActive = true
+        } else {
+            heightConstraint?.constant = height
         }
     }
     
@@ -83,5 +86,4 @@ extension KeyboardViewController: KeyboardContextProviding {
     var documentContextAfterInput: String? {
         textDocumentProxy.documentContextAfterInput
     }
-    
 }
