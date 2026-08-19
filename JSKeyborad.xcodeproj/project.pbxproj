@@ -40,6 +40,8 @@
 		VARIABLE_PROCESSOR_SRC_1 /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
 		TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
 		FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
+		KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		WIDGET_EMBED /* JSKeyborad-WidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = WIDGET_EXT /* JSKeyborad-WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +100,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXContainerItemProxy section */
+		KEYBOARD_PROXY = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PROJECT_OBJECT /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = KEYBOARD_TARGET;
+			remoteInfo = JSKeyborad-KeyboardExtension;
+		};
+		WIDGET_PROXY = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PROJECT_OBJECT /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = WIDGET_TARGET;
+			remoteInfo = JSKeyborad-WidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXGroup section */
 		ROOT_GROUP = {
@@ -207,10 +226,13 @@
 				MAIN_APP_SOURCES /* Sources */,
 				MAIN_APP_FRAMEWORKS /* Frameworks */,
 				MAIN_APP_RESOURCES /* Resources */,
+				EMBED_EXTENSIONS /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				KEYBOARD_DEPENDENCY,
+				WIDGET_DEPENDENCY,
 			);
 			name = JSKeyborad;
 			productName = JSKeyborad;
@@ -373,6 +395,34 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EMBED_EXTENSIONS /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */,
+				WIDGET_EMBED /* JSKeyborad-WidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		KEYBOARD_DEPENDENCY = {
+			isa = PBXTargetDependency;
+			target = KEYBOARD_TARGET /* JSKeyborad-KeyboardExtension */;
+			targetProxy = KEYBOARD_PROXY;
+		};
+		WIDGET_DEPENDENCY = {
+			isa = PBXTargetDependency;
+			target = WIDGET_TARGET /* JSKeyborad-WidgetExtension */;
+			targetProxy = WIDGET_PROXY;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		PROJECT_DEBUG /* Debug */ = {
