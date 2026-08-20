@@ -42,17 +42,17 @@ struct KeyboardView: View {
                     }
                 )
             } else {
-                TemplateBar
-                SearchBarButton
+                templateBar
+                searchBarButton
                 ScrollView(.horizontal, showsIndicators: false) {
-                    FolderTabs
+                    folderTabs
                 }
                 .frame(height: 36)
                 
-                TemplatesGrid
+                templatesGrid
             }
             
-            BottomToolbar
+            bottomToolbar
         }
         .background(backgroundColor)
         .onAppear {
@@ -62,7 +62,7 @@ struct KeyboardView: View {
     
     // MARK: - Template Bar
     
-    private var TemplateBar: some View {
+    private var templateBar: some View {
         HStack {
             if let selected = viewModel.selectedTemplate {
                 Text(selected.title)
@@ -94,7 +94,7 @@ struct KeyboardView: View {
     
     // MARK: - Search Bar Button
     
-    private var SearchBarButton: some View {
+    private var searchBarButton: some View {
         Button {
             isSearchMode = true
         } label: {
@@ -115,7 +115,7 @@ struct KeyboardView: View {
     
     // MARK: - Folder Tabs
     
-    private var FolderTabs: some View {
+    private var folderTabs: some View {
         HStack(spacing: 8) {
             ForEach(viewModel.folders) { folder in
                 Button {
@@ -140,11 +140,11 @@ struct KeyboardView: View {
     
     // MARK: - Templates Grid
     
-    private var TemplatesGrid: some View {
+    private var templatesGrid: some View {
         ScrollView {
             LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
                 ForEach(viewModel.filteredTemplates) { template in
-                    TemplateCard(template: template)
+                    templateCard(template: template)
                         .onTapGesture {
                             viewModel.selectTemplate(template)
                         }
@@ -159,7 +159,7 @@ struct KeyboardView: View {
     
     // MARK: - Template Card
     
-    private func TemplateCard(template: Template) -> some View {
+    private func templateCard(template: Template) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 if let iconName = template.customIcon {
@@ -194,7 +194,7 @@ struct KeyboardView: View {
     
     // MARK: - Bottom Toolbar
     
-    private var BottomToolbar: some View {
+    private var bottomToolbar: some View {
         HStack(spacing: 16) {
             Button {
                 onNextKeyboard()
@@ -255,18 +255,18 @@ struct KeyboardView: View {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
+        let alpha, red, green, blue: UInt64
         switch hex.count {
         case 3:
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+            (alpha, red, green, blue) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
         case 6:
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+            (alpha, red, green, blue) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
         case 8:
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+            (alpha, red, green, blue) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
-            (a, r, g, b) = (255, 0, 0, 0)
+            (alpha, red, green, blue) = (255, 0, 0, 0)
         }
-        return Color(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: Double(a) / 255)
+        return Color(.sRGB, red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255, opacity: Double(alpha) / 255)
     }
 }
 

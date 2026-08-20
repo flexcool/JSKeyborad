@@ -4,8 +4,8 @@ class KeyboardViewModel: ObservableObject {
     @Published var templates: [Template] = []
     @Published var folders: [Folder] = []
     @Published var searchText = ""
-    @Published var selectedFolder: Folder? = nil
-    @Published var selectedTemplate: Template? = nil
+    @Published var selectedFolder: Folder?
+    @Published var selectedTemplate: Template?
     
     private let appGroupId = "group.com.jskeyboard.app"
     
