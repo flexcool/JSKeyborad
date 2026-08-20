@@ -103,10 +103,8 @@ class DataStore: ObservableObject {
     }
     
     func moveTemplates(_ templateIds: Set<UUID>, to folderId: UUID?) {
-        for i in templates.indices {
-            if templateIds.contains(templates[i].id) {
-                templates[i].folderId = folderId
-            }
+        for index in templates.indices where templateIds.contains(templates[index].id) {
+            templates[index].folderId = folderId
         }
         saveTemplates()
     }
@@ -162,10 +160,8 @@ class DataStore: ObservableObject {
     
     func deleteFolder(_ folder: Folder) {
         guard !folder.isSystem else { return }
-        for i in templates.indices {
-            if templates[i].folderId == folder.id {
-                templates[i].folderId = nil
-            }
+        for index in templates.indices where templates[index].folderId == folder.id {
+            templates[index].folderId = nil
         }
         folders.removeAll { $0.id == folder.id }
         saveFolders()

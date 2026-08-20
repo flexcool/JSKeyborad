@@ -63,7 +63,7 @@ class UsageStatsManager: ObservableObject {
     func getWeeklyTotal() -> Int {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        let weekAgo = calendar.date(byAdding: .day, value: -7, to: today)!
+        guard let weekAgo = calendar.date(byAdding: .day, value: -7, to: today) else { return 0 }
         
         return dailyStats
             .filter { $0.date >= weekAgo }
@@ -73,7 +73,7 @@ class UsageStatsManager: ObservableObject {
     func getMonthlyTotal() -> Int {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        let monthAgo = calendar.date(byAdding: .month, value: -1, to: today)!
+        guard let monthAgo = calendar.date(byAdding: .month, value: -1, to: today) else { return 0 }
         
         return dailyStats
             .filter { $0.date >= monthAgo }

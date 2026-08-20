@@ -5,10 +5,10 @@ struct TemplateListView: View {
     @Binding var searchText: String
     @State private var isAddingTemplate = false
     @State private var isAddingFolder = false
-    @State private var editingFolder: Folder? = nil
+    @State private var editingFolder: Folder?
     @State private var selectedTemplates: Set<UUID> = []
     @State private var isEditing = false
-    @State private var selectedFolder: UUID? = nil
+    @State private var selectedFolder: UUID?
     @State private var showAddMenu = false
     
     var filteredTemplates: [Template] {

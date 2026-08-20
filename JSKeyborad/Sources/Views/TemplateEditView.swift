@@ -8,7 +8,7 @@ struct TemplateEditView: View {
     
     @State private var title = ""
     @State private var content = ""
-    @State private var selectedFolderId: UUID? = nil
+    @State private var selectedFolderId: UUID?
     @State private var customIcon: String = "doc.text"
     @State private var customColor: String = "#007AFF"
     @State private var isPinned = false

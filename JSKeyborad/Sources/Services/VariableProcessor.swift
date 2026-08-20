@@ -68,12 +68,10 @@ struct VariableProcessor {
             let nsString = template as NSString
             let matches = regex.matches(in: template, range: NSRange(location: 0, length: nsString.length))
             
-            for match in matches {
-                if match.numberOfRanges > 1 {
-                    let variableName = nsString.substring(with: match.range(at: 1))
-                    if !variables.contains(variableName) {
-                        variables.append(variableName)
-                    }
+            for match in matches where match.numberOfRanges > 1 {
+                let variableName = nsString.substring(with: match.range(at: 1))
+                if !variables.contains(variableName) {
+                    variables.append(variableName)
                 }
             }
         }

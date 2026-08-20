@@ -3,7 +3,7 @@ import SwiftUI
 struct FolderListView: View {
     @EnvironmentObject var dataStore: DataStore
     @State private var isAddingFolder = false
-    @State private var editingFolder: Folder? = nil
+    @State private var editingFolder: Folder?
     
     var body: some View {
         NavigationStack {
