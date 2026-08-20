@@ -7,7 +7,6 @@ struct ContentView: View {
     
     enum Tab: String {
         case templates
-        case folders
         case clipboard
         case stats
         case settings
@@ -20,12 +19,6 @@ struct ContentView: View {
                     Label("模板", systemImage: "doc.text")
                 }
                 .tag(Tab.templates)
-            
-            FolderListView()
-                .tabItem {
-                    Label("文件夹", systemImage: "folder")
-                }
-                .tag(Tab.folders)
             
             ClipboardHistoryView()
                 .tabItem {

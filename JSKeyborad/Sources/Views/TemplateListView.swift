@@ -4,9 +4,12 @@ struct TemplateListView: View {
     @EnvironmentObject var dataStore: DataStore
     @Binding var searchText: String
     @State private var isAddingTemplate = false
+    @State private var isAddingFolder = false
+    @State private var editingFolder: Folder? = nil
     @State private var selectedTemplates: Set<UUID> = []
     @State private var isEditing = false
     @State private var selectedFolder: UUID? = nil
+    @State private var showAddMenu = false
     
     var filteredTemplates: [Template] {
         if searchText.isEmpty {
@@ -18,7 +21,9 @@ struct TemplateListView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                FolderFilterBar(selectedFolder: $selectedFolder)
+                FolderFilterBar(selectedFolder: $selectedFolder, onManageFolders: {
+                    isAddingFolder = true
+                })
                 
                 if filteredTemplates.isEmpty {
                     EmptyStateView(
@@ -71,15 +76,33 @@ struct TemplateListView: View {
                         }
                         
                         Button {
-                            isAddingTemplate = true
+                            showAddMenu = true
                         } label: {
                             Image(systemName: "plus")
                         }
                     }
                 }
             }
+            .confirmationDialog("添加", isPresented: $showAddMenu) {
+                Button("新建模板") {
+                    isAddingTemplate = true
+                }
+                Button("新建文件夹") {
+                    isAddingFolder = true
+                }
+                Button("取消", role: .cancel) {}
+            }
             .sheet(isPresented: $isAddingTemplate) {
                 TemplateEditView(template: nil)
+                    .environmentObject(dataStore)
+            }
+            .sheet(isPresented: $isAddingFolder) {
+                FolderEditView(folder: nil)
+                    .environmentObject(dataStore)
+            }
+            .sheet(item: $editingFolder) { folder in
+                FolderEditView(folder: folder)
+                    .environmentObject(dataStore)
             }
         }
     }
@@ -101,6 +124,7 @@ struct TemplateListView: View {
 struct FolderFilterBar: View {
     @EnvironmentObject var dataStore: DataStore
     @Binding var selectedFolder: UUID?
+    var onManageFolders: (() -> Void)?
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -112,6 +136,16 @@ struct FolderFilterBar: View {
                 ForEach(dataStore.folders) { folder in
                     FilterChip(title: folder.name, isSelected: selectedFolder == folder.id) {
                         selectedFolder = folder.id
+                    }
+                    .contextMenu {
+                        if !folder.isSystem {
+                            Button {
+                                selectedFolder = folder.id
+                                onManageFolders?()
+                            } label: {
+                                Label("编辑", systemImage: "pencil")
+                            }
+                        }
                     }
                 }
             }
@@ -200,18 +234,18 @@ struct TemplateRow: View {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
+        let alpha, red, green, blue: UInt64
         switch hex.count {
         case 3:
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+            (alpha, red, green, blue) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
         case 6:
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+            (alpha, red, green, blue) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
         case 8:
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+            (alpha, red, green, blue) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
-            (a, r, g, b) = (255, 0, 0, 0)
+            (alpha, red, green, blue) = (255, 0, 0, 0)
         }
-        return Color(.sRGB, red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255, opacity: Double(a) / 255)
+        return Color(.sRGB, red: Double(red) / 255, green: Double(green) / 255, blue: Double(blue) / 255, opacity: Double(alpha) / 255)
     }
 }
 
