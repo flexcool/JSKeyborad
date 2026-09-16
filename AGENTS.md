@@ -81,6 +81,8 @@ These are enforced in CI (`|| true` on lint job but still reported):
 
 3. **Keyboard height constraint** is created once and updated, not recreated each `viewWillLayoutSubviews`.
 
+4. **Keyboard layout is compact.** Templates are inserted on tap (not long-press). Keep views minimal — no nested scroll views without constraints.
+
 ## Adding a new source file
 
 Files go under `JSKeyborad/Sources/` in the appropriate subdirectory. The project uses SPM-style grouping — Xcode project files (`.pbxproj`) are hand-edited for new targets; new Swift files within an existing target should appear in the project automatically when opened in Xcode.
