@@ -37,8 +37,6 @@
 		KEYBOARD_SEARCH_VIEW_SRC_1 /* KeyboardSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = KEYBOARD_SEARCH_VIEW_SRC_REF /* KeyboardSearchView.swift */; };
 		DATASTORE_SRC_1 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DATASTORE_SRC_REF /* DataStore.swift */; };
 		VARIABLE_PROCESSOR_SRC_1 /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
-		TEMPLATE_MODEL_SRC_2 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEMPLATE_MODEL_SRC_REF /* Template.swift */; };
-		FOLDER_MODEL_SRC_2 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FOLDER_MODEL_SRC_REF /* Folder.swift */; };
 		KEYBOARD_EMBED /* JSKeyborad-KeyboardExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = KEYBOARD_EXT /* JSKeyborad-KeyboardExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
