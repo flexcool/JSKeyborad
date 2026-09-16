@@ -174,7 +174,6 @@ struct FolderEditView: View {
             }
             .navigationTitle(folder == nil ? "新建文件夹" : "编辑文件夹")
             .navigationBarTitleDisplayMode(.inline)
-            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("取消") {

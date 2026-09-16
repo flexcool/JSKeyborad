@@ -93,7 +93,6 @@ struct TemplateEditView: View {
             }
             .navigationTitle(template == nil ? "新建模板" : "编辑模板")
             .navigationBarTitleDisplayMode(.inline)
-            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("取消") {
