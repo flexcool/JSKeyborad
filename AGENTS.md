@@ -77,11 +77,15 @@ These are enforced in CI (`|| true` on lint job but still reported):
 
 1. **`KeyboardExtension/Info.plist` is explicit.** Never set `GENERATE_INFOPLIST_FILE = YES` for the keyboard target — the system cannot create the extension placeholder from the generated plist. The plist must contain a valid `NSExtension` dictionary with `NSExtensionPointIdentifier` and `NSExtensionPrincipalClass`.
 
-2. **Sheet sheets need `.environmentObject`.** When presenting `TemplateEditView` or `FolderEditView` in a `.sheet`, always pass `.environmentObject(dataStore)` or it will crash on first access to `dataStore.folders`.
+2. **Main app uses generated Info.plist.** The main app target uses `GENERATE_INFOPLIST_FILE = YES`. Do NOT add an explicit Info.plist or InfoPlist.swift to the build — Xcode will generate it from build settings.
 
-3. **Keyboard height constraint** is created once and updated, not recreated each `viewWillLayoutSubviews`.
+3. **Sheet sheets need `.environmentObject`.** When presenting `TemplateEditView` or `FolderEditView` in a `.sheet`, always pass `.environmentObject(dataStore)` or it will crash on first access to `dataStore.folders`.
 
-4. **Keyboard layout is compact.** Templates are inserted on tap (not long-press). Keep views minimal — no nested scroll views without constraints.
+4. **Keyboard height constraint** is created once and updated, not recreated each `viewWillLayoutSubviews`.
+
+5. **Keyboard layout is compact.** Templates are inserted on tap (not long-press). Keep views minimal — no nested scroll views without constraints.
+
+6. **Remove iOS 17+ APIs.** Deployment target is iOS 16.0, so avoid APIs like `.scrollDismissesKeyboard(.interactively)`.
 
 ## Adding a new source file
 
