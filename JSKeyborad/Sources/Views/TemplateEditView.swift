@@ -34,11 +34,13 @@ struct TemplateEditView: View {
             Form {
                 Section("基本信息") {
                     TextField("标题", text: $title)
+                        .textContentType(.name)
                     
                     VStack(alignment: .leading, spacing: 8) {
                         Text("内容")
                         TextEditor(text: $content)
                             .frame(minHeight: 100)
+                            .textContentType(.initials)
                     }
                     
                     Picker("文件夹", selection: $selectedFolderId) {
@@ -91,6 +93,7 @@ struct TemplateEditView: View {
             }
             .navigationTitle(template == nil ? "新建模板" : "编辑模板")
             .navigationBarTitleDisplayMode(.inline)
+            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("取消") {

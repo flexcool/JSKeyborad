@@ -36,6 +36,10 @@ class ClipboardManager: ObservableObject {
         saveHistory()
     }
     
+    func getCurrentClipboardContent() -> String? {
+        return UIPasteboard.general.string
+    }
+    
     func removeFromHistory(_ item: ClipboardItem) {
         history.removeAll { $0.id == item.id }
         saveHistory()

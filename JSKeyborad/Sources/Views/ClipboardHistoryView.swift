@@ -17,6 +17,24 @@ struct ClipboardHistoryView: View {
     var body: some View {
         NavigationStack {
             List {
+                if let currentContent = clipboardManager.getCurrentClipboardContent(),
+                   !currentContent.isEmpty {
+                    Section("当前剪贴板") {
+                        ClipboardItemRow(
+                            item: ClipboardItem(
+                                content: currentContent,
+                                source: "当前剪贴板",
+                                timestamp: Date()
+                            ),
+                            isEditing: isEditing,
+                            isSelected: false
+                        )
+                        .onTapGesture {
+                            copyToClipboard(currentContent)
+                        }
+                    }
+                }
+                
                 if !clipboardManager.getPinnedItems().isEmpty && searchText.isEmpty {
                     Section("置顶") {
                         ForEach(clipboardManager.getPinnedItems()) { item in
@@ -80,11 +98,16 @@ struct ClipboardHistoryView: View {
                     }
                 }
             }
+            .onAppear {
+                // 刷新当前剪贴板内容
+                _ = clipboardManager.getCurrentClipboardContent()
+            }
         }
     }
     
     private func copyToClipboard(_ text: String) {
         UIPasteboard.general.string = text
+        clipboardManager.copyToClipboard(text, source: "手动复制")
     }
     
     private func toggleSelection(_ item: ClipboardItem) {

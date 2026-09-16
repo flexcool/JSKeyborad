@@ -5,8 +5,6 @@ struct KeyboardSearchView: View {
     let onTemplateSelect: (Template) -> Void
     let onCancel: () -> Void
     
-    @FocusState private var isSearchFocused: Bool
-    
     var body: some View {
         HStack(spacing: 12) {
             HStack {
@@ -16,7 +14,6 @@ struct KeyboardSearchView: View {
                 
                 TextField("搜索模板...", text: $searchText)
                     .font(.subheadline)
-                    .focused($isSearchFocused)
                     .autocorrectionDisabled()
                     .textInputAutocapitalization(.never)
                 
@@ -36,16 +33,12 @@ struct KeyboardSearchView: View {
             
             Button("取消") {
                 searchText = ""
-                isSearchFocused = false
                 onCancel()
             }
             .font(.subheadline)
         }
         .padding(.horizontal)
         .padding(.vertical, 8)
-        .onAppear {
-            isSearchFocused = true
-        }
     }
 }
 
