@@ -21,7 +21,6 @@
 		DATASTORE_SRC /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DATASTORE_SRC_REF /* DataStore.swift */; };
 		VARIABLE_PROCESSOR_SRC /* VariableProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */; };
 		JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = JS_ENGINE_SRC_REF /* JSScriptEngine.swift */; };
-		INFOPLIST_SRC /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = INFOPLIST_SRC_REF /* InfoPlist.swift */; };
 		CLIPBOARD_MANAGER_SRC /* ClipboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */; };
 		USAGE_STATS_MANAGER_SRC /* UsageStatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */; };
 		CLIPBOARD_HISTORY_VIEW_SRC /* ClipboardHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CLIPBOARD_HISTORY_VIEW_SRC_REF /* ClipboardHistoryView.swift */; };
@@ -59,7 +58,6 @@
 		DATASTORE_SRC_REF /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		VARIABLE_PROCESSOR_SRC_REF /* VariableProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableProcessor.swift; sourceTree = "<group>"; };
 		JS_ENGINE_SRC_REF /* JSScriptEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSScriptEngine.swift; sourceTree = "<group>"; };
-		INFOPLIST_SRC_REF /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		CLIPBOARD_MANAGER_SRC_REF /* ClipboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardManager.swift; sourceTree = "<group>"; };
 		USAGE_STATS_MANAGER_SRC_REF /* UsageStatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageStatsManager.swift; sourceTree = "<group>"; };
 		CLIPBOARD_HISTORY_VIEW_SRC_REF /* ClipboardHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryView.swift; sourceTree = "<group>"; };
@@ -119,7 +117,6 @@
 			isa = PBXGroup;
 			children = (
 				MAIN_APP_SRC_REF /* JSKeyboradApp.swift */,
-				INFOPLIST_SRC_REF /* InfoPlist.swift */,
 				VIEWS_GROUP /* Views */,
 				MODELS_GROUP /* Models */,
 				SERVICES_GROUP /* Services */,
@@ -304,7 +301,6 @@
 				JS_ENGINE_SRC /* JSScriptEngine.swift in Sources */,
 				CLIPBOARD_MANAGER_SRC /* ClipboardManager.swift in Sources */,
 				USAGE_STATS_MANAGER_SRC /* UsageStatsManager.swift in Sources */,
-				INFOPLIST_SRC /* InfoPlist.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
