@@ -43,11 +43,17 @@ struct KeyboardView: View {
                 )
             } else {
                 templateBar
-                searchBarButton
-                ScrollView(.horizontal, showsIndicators: false) {
-                    folderTabs
+                
+                HStack(spacing: 0) {
+                    searchBarButton
+                    
+                    Spacer(minLength: 8)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        folderTabs
+                    }
+                    .frame(height: 36)
                 }
-                .frame(height: 36)
                 
                 templatesGrid
             }
@@ -87,8 +93,8 @@ struct KeyboardView: View {
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 8)
-        .frame(height: viewModel.selectedTemplate != nil ? 44 : 0)
+        .padding(.vertical, 6)
+        .frame(height: viewModel.selectedTemplate != nil ? 36 : 0)
         .clipped()
     }
     
@@ -101,37 +107,37 @@ struct KeyboardView: View {
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(.secondary)
-                Text("搜索模板...")
-                    .font(.subheadline)
+                Text("搜索")
+                    .font(.caption)
                     .foregroundColor(.secondary)
-                Spacer()
             }
-            .padding(8)
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(8)
-            .padding(.horizontal)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(Color(.tertiarySystemBackground))
+            .cornerRadius(6)
+            .frame(maxWidth: 80)
         }
     }
     
     // MARK: - Folder Tabs
     
     private var folderTabs: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             ForEach(viewModel.folders) { folder in
                 Button {
                     viewModel.selectFolder(folder)
                 } label: {
-                    HStack(spacing: 4) {
+                    HStack(spacing: 2) {
                         Image(systemName: folder.icon)
-                            .font(.caption)
+                            .font(.caption2)
                         Text(folder.name)
-                            .font(.caption)
+                            .font(.caption2)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
                     .background(viewModel.selectedFolder?.id == folder.id ? Color.accentColor : Color(.tertiarySystemBackground))
                     .foregroundColor(viewModel.selectedFolder?.id == folder.id ? .white : .primary)
-                    .cornerRadius(16)
+                    .cornerRadius(10)
                 }
             }
         }
@@ -142,25 +148,23 @@ struct KeyboardView: View {
     
     private var templatesGrid: some View {
         ScrollView {
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 8) {
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 6) {
                 ForEach(viewModel.filteredTemplates) { template in
                     templateCard(template: template)
                         .onTapGesture {
-                            viewModel.selectTemplate(template)
-                        }
-                        .onLongPressGesture {
-                            viewModel.selectedTemplate = template
+                            insertTemplate(template)
                         }
                 }
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.bottom, 4)
         }
     }
     
     // MARK: - Template Card
     
     private func templateCard(template: Template) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack {
                 if let iconName = template.customIcon {
                     Image(systemName: iconName)
@@ -185,17 +189,18 @@ struct KeyboardView: View {
             Text(template.content)
                 .font(.caption2)
                 .foregroundColor(.secondary)
-                .lineLimit(2)
+                .lineLimit(1)
         }
-        .padding(8)
+        .padding(6)
+        .frame(minHeight: 50)
         .background(Color(.secondarySystemBackground))
-        .cornerRadius(8)
+        .cornerRadius(6)
     }
     
     // MARK: - Bottom Toolbar
     
     private var bottomToolbar: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: 12) {
             Button {
                 onNextKeyboard()
             } label: {
@@ -218,14 +223,14 @@ struct KeyboardView: View {
                 Text("换行")
                     .font(.subheadline)
                     .fontWeight(.medium)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
                     .background(Color(.tertiarySystemBackground))
-                    .cornerRadius(8)
+                    .cornerRadius(6)
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 8)
+        .padding(.vertical, 6)
         .background(Color(.systemBackground))
     }
     
